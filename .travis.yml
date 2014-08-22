@@ -25,15 +25,22 @@ install:
   - conda update conda
 
   # Install dependencies
-  - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION pytest numpy sqlalchemy pandas pip
+  - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION pytest sqlalchemy pip
   - source activate test-environment
-  - conda install -c https://conda.binstar.org/chuongdo mysql-python
-  - conda install -c https://conda.binstar.org/chuongdo psycopg2
+  - conda install -c https://conda.binstar.org/chuongdo mysql-python --yes
+  - conda install -c https://conda.binstar.org/chuongdo psycopg2 --yes
 
   # Install MongoDB
   - pip install pymongo
 
-#nothing to do before hand postgres db already exists
-#before_script:
+  - "sudo echo -e '\n[mysqld]\nocal_infile=ON\n\n[mysql]\nlocal_infile=ON' >> /etc/my.cnf"
+  - "sudo service mysql status"
+  - "sudo service mysql restart"
 
-script: py.test --doctest-modules --verbose --pyargs
+
+#nothing to do before hand -- postgres db already exists
+before_script:
+  - mysql -e 'create database test'
+
+script:
+  - py.test -s --doctest-modules --verbose --pyargs

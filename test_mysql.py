@@ -4,9 +4,13 @@ import pytest
 
 MySQLdb = pytest.importorskip('MySQLdb')
 import subprocess
-ps = subprocess.Popen("ps aux | grep mysql",shell=True, stdout=subprocess.PIPE)
+ps = subprocess.Popen("ps aux | grep '[m]ysqld'",shell=True, stdout=subprocess.PIPE)
 output = ps.stdout.read()
-pytestmark = pytest.mark.skipif(len(output.split('\n')) < 6, reason="No MySQL Installation")
+print(output)
+print(len(output.split('\n')) < 6)
+
+
+# pytestmark = pytest.mark.skipif(len(output.split('\n')) < 6, reason="No MySQL Installation")
 
 import sqlalchemy
 from sqlalchemy import Table, Column, Integer
@@ -53,6 +57,16 @@ def test_csv_mysql_load():
     m.create_all(engine)
 
     cursor = conn.cursor()
+    inline_cmd = "SHOW GLOBAL VARIABLES LIKE 'local_infile';"
+    cursor.execute(inline_cmd)
+    conn.commit()
+    print(cursor.fetchall())
+
+    set_inline_on = "SET GLOBAL local_infile = 'ON';"
+    cursor.execute(set_inline_on)
+    conn.commit()
+
+
     full_path = os.path.abspath(file_name)
     load = '''LOAD DATA LOCAL INFILE '{}' INTO TABLE {} FIELDS TERMINATED BY ','
         lines terminated by '\n'
