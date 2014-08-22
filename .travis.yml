@@ -33,7 +33,7 @@ install:
   # Install MongoDB
   - pip install pymongo
 
-before_script:
-  - psql -c 'create database postgres;' -U postgres
+#nothing to do before hand postgres db already exists
+#before_script:
 
 script: py.test --doctest-modules --verbose --pyargs
