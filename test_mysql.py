@@ -62,9 +62,9 @@ def test_csv_mysql_load():
     conn.commit()
     print(cursor.fetchall())
 
-    set_inline_on = "SET GLOBAL local_infile = 'ON';"
-    cursor.execute(set_inline_on)
-    conn.commit()
+    # set_inline_on = "SET GLOBAL local_infile = 'ON';"
+    # cursor.execute(set_inline_on)
+    # conn.commit()
 
 
     full_path = os.path.abspath(file_name)

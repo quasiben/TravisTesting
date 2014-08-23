@@ -33,11 +33,6 @@ install:
   # Install MongoDB
   - pip install pymongo
 
-  - "sudo echo -e '\n[mysqld]\nocal_infile=ON\n\n[mysql]\nlocal_infile=ON' >> /etc/my.cnf"
-  - "sudo service mysql status"
-  - "sudo service mysql restart"
-
-
 #nothing to do before hand -- postgres db already exists
 before_script:
   - mysql -e 'create database test'
