@@ -14,6 +14,9 @@ services:
     - postgres
     - mysql
 
+before_install:
+  - mysql -e "SHOW VARIABLES LIKE 'local_infile';"
+
 # Note: conda is not available for anything but python 2.7. So below we try to install
 # conda in 2.7 and use conda to install dependencies in the virtualenv for version x.y
 install:
