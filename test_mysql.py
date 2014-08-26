@@ -43,7 +43,7 @@ def teardown_function(function):
 
 def test_csv_mysql_load():
 
-    tbl = 'travisci_postgres'
+    tbl = 'travisci_mysql'
 
     engine = sqlalchemy.create_engine(url)
     conn = engine.raw_connection()
@@ -68,7 +68,7 @@ def test_csv_mysql_load():
 
 
     full_path = os.path.abspath(file_name)
-    load = '''LOAD DATA LOCAL INFILE '{}' INTO TABLE {} FIELDS TERMINATED BY ','
+    load = '''LOAD DATA INFILE '{}' INTO TABLE {} FIELDS TERMINATED BY ','
         lines terminated by '\n'
         '''.format(full_path, tbl)
     cursor.execute(load)
